@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Detail;
 use Illuminate\Http\Request;
 
-class detailController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,19 +14,7 @@ class detailController extends Controller
      */
     public function index()
     {
-        // $data = Detail::with('user')->find(2);
-        // echo $data->city."<br>";
-        // echo $data->user->email;
-
-        // $data = Detail::with('user')->whereRaw('roll>30')->get();  //👉 first table search `details` table
-        // $data = Detail::withWhereHas('user', function($quey){
-        //     $quey->where('gender', 'Other');
-        // })->get();  //👉 se4cond table find get data 1 torika
-
-        $users = User::where('gender', 'Other')->get(); 
-        $fullData = Detail::whereBelongsTo($users)->get(); //👉 se4cond table find get data 1 torika
-
-        return $fullData;
+        //
     }
 
     /**
@@ -37,7 +24,11 @@ class detailController extends Controller
      */
     public function create()
     {
-       
+        $findUser = User::find(3);
+        $multipulVal = [5,5,8]; //multipul value `attach detach sync` sent kora jabe
+        // $findUser->role()->attach(4); // value add or insert kora
+        // $findUser->role()->detach(1);   // id value delete or remove kora 
+        $findUser->role()->sync(1);   // update create delete one method. if value exists then remove if value not exists insert value 
     }
 
     /**

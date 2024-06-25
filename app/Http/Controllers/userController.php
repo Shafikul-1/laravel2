@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
-use App\Models\Detail;
 use Illuminate\Http\Request;
 
-class userController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,17 +15,17 @@ class userController extends Controller
      */
     public function index()
     {
-        // $data = User::with('detail')->find(9);  //👉 same work new opay
-        // $data = User::find(9); //👉 sodo deail table ar data view kore
-        // $o = $data->detail;
-        // return $o;
-        // $data = User::doesntHave('detail')->get();  //👉 jarder kono details nai sodo tara show
-        // $data = User::has('detail')->with('detail')->get() ; //👉 jarder sodo details ase sodo tara show
-        // $data = User::has('detail', '>=', 2)->with('detail')->get() ; //👉 jarder details 2 ar soman ba besi sodo tara show
-        // $data = User::withCount('detail')->get() ; //👉 count korbe details kinto show korbe user table
-        $data = User::select(['name', 'email', 'gender'])->withCount('detail')->get(); //👉 select command add
-
-        return $data;
+        $users = User::with('role')->get();
+        foreach ($users as $value) {
+            echo $value->id . "<br>";
+            echo $value->name . "<br>";
+            echo $value->email . "<br>";
+            foreach ($value->role as $val) {
+                echo $val->role_name . "/ ";
+            }
+            echo "<hr>";
+            // return $value;
+        }
     }
 
     /**
@@ -35,14 +35,11 @@ class userController extends Controller
      */
     public function create()
     {
-        $addDetails = new Detail([
-            'city' => 'Bangladesh',
-            'cardId' => 34534,
-            'roll' => 12
-        ]);
-
-        $findUser = User::find(2);
-        $findUser->detail()->save($addDetails);
+        $changeing = Role::find(1);
+        $val = [3,4];
+        $changeing->user()->attach($val); // value add or insert kora
+        // $changeing->user()->detach($val);  // id value delete or remove kora 
+        // $changeing->user()->sync($val);   // update create delete one method. if value exists then remove if value not exists insert value 
     }
 
     /**

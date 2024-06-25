@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('details', function (Blueprint $table) {
+        Schema::create('user_role', function (Blueprint $table) {
             $table->id();
-            $table->string('city', 400);
-            $table->integer('cardId');
-            $table->integer('roll');
-            $table->integer('user_id');
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('role_id')->references('id')->on('roles')->cascadeOnDelete();
             $table->timestamps();
         });
+
     }
 
     /**
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('details');
+        Schema::dropIfExists('user_role');
     }
 };
